@@ -2,8 +2,10 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <window.hpp>
 #include <image.hpp>
+#include <audio.hpp>
 
 #define W 960
 #define H 480
@@ -26,8 +28,10 @@ bool check_y_collision(SDL_Rect rec);
 
 
 int main(int argc, char* argv[]) {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	bool game_over = false;
 	int bx = W / 2 - 16, by = H / 2 - 16, bw = 32, bh = 32,
@@ -44,6 +48,8 @@ int main(int argc, char* argv[]) {
 		ball = image(win, "res/ball.jpg", { 510, 130, 190, 150 }, { bx, by, bw, bh } ),
 		p1 = image(win, "res/player1.png", { 0, 0, 637, 392 }, { x1, y1, w1, h1 } ),
 		p2 = image(win, "res/player2.jpg", { 0, 0, 447, 339 }, { x2, y2, w2, h2 } );
+
+	sfx collision = sfx("res/sfx_collision.ogg");
 
 	ADD_BORDERS
 	add_obj( { x1, y1, w1, h1 } );
@@ -88,12 +94,14 @@ int main(int argc, char* argv[]) {
 
 		for (int i = 0; i < 10; ++i) {
 
-			if (check_x_collision( { bx, by, bw, bh } ) || check_x_collision_with_player())
+			if (check_x_collision( { bx, by, bw, bh } ) || check_x_collision_with_player()) {
+				collision.play_once();
 				if (bwdir == LEFT)
 						bwdir = RIGHT;
 
 					else
 						bwdir = LEFT;
+			}
 
 			if (bwdir == LEFT)
 				--bx;
@@ -109,12 +117,14 @@ int main(int argc, char* argv[]) {
 
 		for (int i = 0; i < 10; ++i) {
 
-			if (check_y_collision( { bx, by, bw, bh } ))
+			if (check_y_collision( { bx, by, bw, bh } )) {
+				collision.play_once();
 				if (bhdir == UP)
 						bhdir = DOWN;
 
 					else
 						bhdir = UP;
+			}
 
 			if (bhdir == UP)
 				--by;
