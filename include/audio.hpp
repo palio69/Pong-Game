@@ -2,18 +2,18 @@
 
 #include <SDL2/SDL_mixer.h>
 
-class sfx {
+class audio {
 private:
-	Mix_Music* fx;
+	Mix_Music* aud;
 
 public:
-	sfx(const char* file) :
-	fx(nullptr) {
-		this->fx = Mix_LoadMUS(file);
+	audio(const char* file) :
+	aud(nullptr) {
+		this->aud = Mix_LoadMUS(file);
 	}
-	~sfx() { Mix_FreeMusic(this->fx); }
+	~audio() { Mix_FreeMusic(this->aud); }
 
-	void play(const int n) { Mix_PlayMusic(this->fx, n); }
-	void play_once() { Mix_PlayMusic(this->fx, 1); }
+	void play(const int n) { Mix_PlayMusic(this->aud, n); }
+	void play_once() { Mix_PlayMusic(this->aud, 1); }
 	
 };

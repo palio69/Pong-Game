@@ -82,25 +82,17 @@ int main(int argc, char* argv[]) {
 		return false;
 	};
 
-	auto check_y_collision_with_player = [&] () -> bool {
-		if ( (bx == x1 + w1 || bx + bw == x1) ||
-			(bx == x2 + w2 || bx + bw == x2) )
-			return true;
-
-		return false;
-	};
-
 	auto move_bx = [&] () -> void {
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 20; ++i) {
 
 			if (check_x_collision( { bx, by, bw, bh } ) || check_x_collision_with_player()) {
 				collision.play_once();
 				if (bwdir == LEFT)
-						bwdir = RIGHT;
+					bwdir = RIGHT;
 
-					else
-						bwdir = LEFT;
+				else
+					bwdir = LEFT;
 			}
 
 			if (bwdir == LEFT)
@@ -115,15 +107,15 @@ int main(int argc, char* argv[]) {
 
 	auto move_by = [&] () -> void {
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 20; ++i) {
 
 			if (check_y_collision( { bx, by, bw, bh } )) {
 				collision.play_once();
 				if (bhdir == UP)
-						bhdir = DOWN;
+					bhdir = DOWN;
 
-					else
-						bhdir = UP;
+				else
+					bhdir = UP;
 			}
 
 			if (bhdir == UP)
@@ -131,6 +123,8 @@ int main(int argc, char* argv[]) {
 
 			else
 				++by;
+
+			ball.change_pos(bx, by);
 
 		}
 
@@ -142,16 +136,18 @@ int main(int argc, char* argv[]) {
 
 			if (check_y_collision( { x1, y1, w1, h1 } ))
 				if (dir1 == UP)
-						dir1 = DOWN;
+					dir1 = DOWN;
 
-					else
-						dir1 = UP;
+				else
+					dir1 = UP;
 
 			if (dir1 == UP)
 				--y1;
 
 			else
 				++y1;
+
+			p1.change_pos(x1, y1);
 
 		}
 
@@ -163,16 +159,18 @@ int main(int argc, char* argv[]) {
 
 			if (check_y_collision( { x2, y2, w2, h2 } ))
 				if (dir2 == UP)
-						dir2 = DOWN;
+					dir2 = DOWN;
 
-					else
-						dir2 = UP;
+				else
+					dir2 = UP;
 
 			if (dir2 == UP)
 				--y2;
 
 			else
 				++y2;
+
+			p2.change_pos(x2, y2);
 
 		}
 
@@ -183,9 +181,6 @@ int main(int argc, char* argv[]) {
 		move_y2();
 		move_bx();
 		move_by();
-		p1.change_pos(x1, y1);
-		p2.change_pos(x2, y2);
-		ball.change_pos(bx, by);
 	};
 
 
