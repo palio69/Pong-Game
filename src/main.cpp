@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 		p1 = image(win, "res/player1.png", { 0, 0, 637, 392 }, { x1, y1, w1, h1 } ),
 		p2 = image(win, "res/player2.jpg", { 0, 0, 447, 339 }, { x2, y2, w2, h2 } );
 
-	sfx collision = sfx("res/sfx_collision.ogg");
+	audio collision = audio("res/sfx_collision.ogg");
 
 	ADD_BORDERS
 	add_obj( { x1, y1, w1, h1 } );
@@ -243,7 +243,7 @@ bool check_x_collision(SDL_Rect rec) {
 
 bool check_y_collision(SDL_Rect rec) {
 	for (auto i : pos)
-		if ( (rec.y == i.first.second || rec.y + rec.h == i.second.second) && rec.x < i.second.first && rec.x + rec.w > i.first.first)
+		if ( (rec.y == i.second.second || rec.y + rec.h == i.first.second) && rec.x < i.second.first && rec.x + rec.w > i.first.first)
 			return true;
 
 	return false;
